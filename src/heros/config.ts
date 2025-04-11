@@ -1,12 +1,10 @@
 import type { Field } from 'payload'
-
 import {
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
-
 import { linkGroup } from '@/fields/linkGroup'
 
 export const hero: Field = {
@@ -27,38 +25,49 @@ export const hero: Field = {
           label: 'High Impact',
           value: 'highImpact',
         },
-       
       ],
       required: true,
     },
     {
-      name: 'richText',
-      type: 'richText',
-      editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
-      }),
-      label: false,
-    },
-    linkGroup({
-      overrides: {
-        maxRows: 2,
-      },
-    }),
-    {
-      name: 'media',
-      type: 'upload',
+      type: 'group',
+      name: 'highImpact',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact'].includes(type),
+        condition: (_, { type } = {}) => type === 'highImpact',
       },
-      relationTo: 'media',
-      required: true,
+      fields: [
+        {
+          name: 'heading',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'backgroundImage',
+          type: 'upload',
+          relationTo: 'media',
+          required: true,
+        },
+        {
+          name: 'description',
+          type: 'richText',
+          required: true,
+          editor: lexicalEditor({
+            features: ({ defaultFeatures }) => {
+              return [
+                ...defaultFeatures,
+                FixedToolbarFeature(),
+                InlineToolbarFeature(),
+                HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
+              ]
+            },
+          }),
+        },
+        linkGroup({
+          appearances: ['default', 'outline'],
+          overrides: {
+            maxRows: 2,
+          },
+        }),
+      ],
     },
   ],
   label: false,

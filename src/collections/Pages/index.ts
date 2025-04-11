@@ -20,6 +20,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+// import HomeBlock from '@/blocks/HomeBlock/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
